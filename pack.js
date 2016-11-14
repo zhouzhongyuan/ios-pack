@@ -22,37 +22,53 @@ const releaseFullPath = [userHome, releasePath, '/yesapp.ipa'].join('/');
 
 
 
+var startTime;
 
-// 1.svn update
-process.chdir(projectFullPath);
-var client = new Client({
-    username: 'zhouzy',
-    password: 'zhouzy',
-    noAuthCache: true,
-});
+function pack() {
+    startTime = Date.now();
+    console.log('Begin pack……',startTime)
+    process.chdir(projectFullPath);
+    return new Promise(function (resolve, reject) {
+        updateSvn()
+            .then(function () {
+                process.chdir(workspaceFullPath);
+                fs.emptyDirSync('build');
+                console.log('init……',Date.now() - startTime)
+                return;
+            })
+            .then(function () {
+                return archive();
+            })
+            .then(function () {
+                console.log('ipa begin');
+                return ipa();
+            })
+            .then(function () {
+                return release();
+            })
+            .then(function () {
+                fs.emptyDirSync('build');
+                process.chdir(__dirname);
+                resolve();
+            })
+            .catch(function (e) {
+                console.log('ERROR');
+                console.log(e)
+                reject(e);
+            });
+    })
+
+}
+module.exports = pack;
 
 
-updateSvn()
-    .then(function () {
-        process.chdir(workspaceFullPath);
-        return;
-    })
-    // .then(function () {
-    //     return archive();
-    // })
-    .then(function () {
-        console.log('ipa begin');
-        return ipa();
-    })
-    .then(function () {
-        return release();
-    })
-    .catch(function (e) {
-        console.log('ERROR');
-        console.log(e)
-    });
 // svn update
 function updateSvn() {
+    var client = new Client({
+        username: 'zhouzy',
+        password: 'zhouzy',
+        noAuthCache: true,
+    });
     return new Promise(function (resolve, reject) {
         client.update(function(err, data) {
             if(err){
@@ -70,9 +86,11 @@ function archive() {
         ls.stdout.on('data', (data) => {
         });
         ls.stderr.on('data', (data) => {
-            reject(data);
+
+            reject(data.toString());
         });
         ls.on('close', (code) => {
+            console.log('archive SUCCESS',Date.now() - startTime)
             resolve(code);
         });
     })
@@ -91,6 +109,7 @@ function ipa() {
             }
         });
         ls.on('close', (code) => {
+            console.log('ipa SUCCESS',Date.now() - startTime)
             resolve(code);
         });
     })
@@ -103,6 +122,8 @@ function release() {
             if(err) {
                 reject(err)
             }
+
+            console.log('release SUCCESS',Date.now() - startTime)
             resolve("success!")
         });
     })

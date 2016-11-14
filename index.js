@@ -1,6 +1,9 @@
 var express = require('express');
+var path = require('path');
 var app = express();
 var pack = require('./route/pack');
+
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/pack', pack);
 

@@ -59,6 +59,7 @@ function pack() {
                 fs.emptyDirSync('build');
                 process.chdir(__dirname);
                 console.log('[5]清理build文件夹-成功');
+                console.log(`总用时: ${ Math.ceil( (Date.now() - startTime)/(1000*60) ) } 分钟`)
                 console.log('打包成功');
                 resolve();
             })
@@ -101,7 +102,6 @@ function archive() {
             reject(data.toString());
         });
         ls.on('close', (code) => {
-            console.log('archive SUCCESS',Date.now() - startTime)
             resolve(code);
         });
     })
@@ -121,7 +121,6 @@ function ipa() {
             // }
         });
         ls.on('close', (code) => {
-            console.log('ipa SUCCESS',Date.now() - startTime)
             resolve(code);
         });
     })
@@ -134,8 +133,6 @@ function release() {
             if(err) {
                 reject(err)
             }
-            console.log('release SUCCESS')
-            console.log(`总用时: ${ (Date.now() - startTime)/(1000*60) } 分钟`)
             resolve("success!")
         });
     })

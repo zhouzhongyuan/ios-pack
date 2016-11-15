@@ -7,8 +7,7 @@ var status = {
 };
 
 router.get('/', function(req, res, next) {
-    res.render('pack', { title: 'Express' });
-    // res.sendFile(__dirname, '../public/index.html');
+    res.render('pack', { title: '打包' });
 });
 router.get('/status', function(req, res, next) {
   res.json(status);

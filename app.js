@@ -10,7 +10,7 @@ var users = require('./routes/users');
 var pack = require('./routes/pack/');
 
 var app = express();
-
+app.use(require('express-status-monitor')());
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');

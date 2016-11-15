@@ -7,7 +7,7 @@ var status = {
 };
 
 router.get('/', function(req, res, next) {
-    res.sendfile('public/index.html');
+    res.sendFile(__dirname, '../public/index.html');
 });
 router.get('/status', function(req, res, next) {
     res.json(status);
@@ -24,6 +24,7 @@ router.post('/', function(req, res, next) {
                 status.busy = false;
                 res.send('打包失败');
             });
+        res.send('打包中');
     })();
 
 });

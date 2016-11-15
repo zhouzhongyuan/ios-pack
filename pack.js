@@ -26,33 +26,44 @@ var startTime;
 
 function pack() {
     startTime = Date.now();
-    console.log('Begin pack……',startTime)
+    console.log('开始打包')
+    console.log('预计用时: 6分钟')
+    console.log('开始时间: ',new Date().toLocaleTimeString())
     process.chdir(projectFullPath);
     return new Promise(function (resolve, reject) {
+        console.log('[1]更新SVN-开始……')
         updateSvn()
             .then(function () {
+                console.log('[1]更新SVN-成功')
                 process.chdir(workspaceFullPath);
                 fs.emptyDirSync('build');
-                console.log('init……',Date.now() - startTime)
                 return;
             })
             .then(function () {
+                console.log('[2]archive-开始……')
                 return archive();
             })
             .then(function () {
-                console.log('ipa begin');
+                console.log('[2]archive成功');
+                console.log('[3]生成ipa-开始……');
                 return ipa();
             })
             .then(function () {
+                console.log('[3]生成ipa-成功');
+                console.log('[4]复制到发布文件夹-开始……');
                 return release();
             })
             .then(function () {
+                console.log('[4]复制到发布文件夹-成功');
+                console.log('[5]清理build文件夹-开始……');
                 fs.emptyDirSync('build');
                 process.chdir(__dirname);
+                console.log('[5]清理build文件夹-成功');
+                console.log('打包成功');
                 resolve();
             })
             .catch(function (e) {
-                console.log('ERROR');
+                console.log('打包失败');
                 console.log(e)
                 reject(e);
             });
@@ -104,9 +115,10 @@ function ipa() {
         });
         ls.stderr.on('data', (data) => {
             data = data.toString();
-            if(!data.match(/_createLoggingBundleAtPath/) && !data.match(/1./) && !data.match(/61/) ){
-                reject(data);
-            }
+            console.log(data);
+            // if(!data.match(/_createLoggingBundleAtPath/) && !data.match(/1./) && !data.match(/61/) ){
+            //     reject(data);
+            // }
         });
         ls.on('close', (code) => {
             console.log('ipa SUCCESS',Date.now() - startTime)
@@ -122,8 +134,8 @@ function release() {
             if(err) {
                 reject(err)
             }
-
-            console.log('release SUCCESS',Date.now() - startTime)
+            console.log('release SUCCESS')
+            console.log(`总用时: ${ (Date.now() - startTime)/(1000*60) } 分钟`)
             resolve("success!")
         });
     })

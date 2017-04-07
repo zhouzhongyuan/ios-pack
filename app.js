@@ -1,3 +1,7 @@
+import getSvn from './routes/util/svn';
+console.log('express es work');
+
+
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');

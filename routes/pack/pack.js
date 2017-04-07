@@ -5,18 +5,20 @@ var Client = require('svn-spawn');
 
 //生成ipa的配置文件
 const exportOptions = [__dirname,'exportOptions.plist'].join('/');
+console.log(exportOptions);
+
 // 系统home文件夹
 const userHome = process.env[(process.platform == 'win32') ? 'USERPROFILE' : 'HOME'];
 // workspace
-const workspacePath = 'project/YIGO_IOS_PACK-del/yes_ios_0_0/project/workspace';
+const workspacePath = 'project/yes_ios_2_1_0/project/workspace';
 const workspaceFullPath = [userHome, workspacePath].join('/');
 // svn
-const projectPath = 'project/YIGO_IOS_PACK-del/yes_ios_0_0';
+const projectPath = 'project/yes_ios_2_1_0';
 const projectFullPath = [userHome, projectPath].join('/');
 // destination
 // TODO fake
-const releasePath = 'project/ios_compile/pack2/yigomobile/public/release/test';
-// const releasePath = 'project/ios_compile/pack2/yigomobile/public/release/com.bokesoft.yigomobile/ios';
+// const releasePath = 'project/ios_compile/pack2/yigomobile/public/release/test';
+const releasePath = 'project/ios_compile/pack2/yigomobile/public/release/com.bokesoft.yigomobile/ios';
 const releaseFullPath = [userHome, releasePath, '/yesapp.ipa'].join('/');
 
 
@@ -110,6 +112,7 @@ function archive() {
 function ipa() {
     return new Promise(function (resolve, reject) {
         const PWD = workspaceFullPath;
+        console.log(exportOptions);
         const ls = spawn('xcodebuild', ['-exportArchive', '-archivePath', `${PWD}/build/yesapp.xcarchive`, '-exportOptionsPlist', exportOptions, '-exportPath', `${PWD}/build`]);
         ls.stdout.on('data', (data) => {
         });

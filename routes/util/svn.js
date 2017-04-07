@@ -1,19 +1,17 @@
-function getSvn(url,dir,username,password) {
-    console.log(username,password);
-    return new Promise(function (resolve, reject) {
-        var Client = require('svn-spawn');
-        var client = new Client({
+import Client from 'svn-spawn';
+function getSvn(url, dir, username, password) {
+    return new Promise((resolve, reject) => {
+        const client = new Client({
             cwd: dir,
-            username: username,
-            password: password
+            username,
+            password,
         });
-        client.checkout(url,function(err, data) {
-            if(err){
-                reject(new Error(err))
+        client.checkout(url, (err, data) => {
+            if (err) {
+                reject(new Error(err));
             }
             resolve(data);
         });
-
     });
-};
+}
 export default getSvn;

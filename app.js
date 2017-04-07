@@ -1,12 +1,11 @@
-const express = require('express');
-const path = require('path');
-const logger = require('morgan');
-const cookieParser = require('cookie-parser');
-const bodyParser = require('body-parser');
-const routes = require('./routes/index');
-const users = require('./routes/users');
-const pack = require('./routes/pack/');
-
+import express from 'express';
+import path from 'path';
+import logger from 'morgan';
+import cookieParser from 'cookie-parser';
+import bodyParser from 'body-parser';
+import routes from './routes/index';
+import users from './routes/users';
+import pack from './routes/pack';
 const app = express();
 app.use(require('express-status-monitor')());
 // view engine setup

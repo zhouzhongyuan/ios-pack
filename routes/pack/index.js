@@ -1,17 +1,17 @@
-const express = require('express');
+import express from 'express';
+import pack from './pack';
+import plist from 'plist';
 const router = express.Router();
-const pack = require('./pack');
-const plist = require('../plist');
 const status = {
     busy: false,
 };
-router.get('/', (req, res, next) => {
+router.get('/', (req, res) => {
     res.render('pack', { title: '打包' });
 });
-router.get('/status', (req, res, next) => {
+router.get('/status', (req, res) => {
     res.json(status);
 });
-router.post('/', (req, res, next) => {
+router.post('/', (req, res) => {
     status.busy = true;
     (function () {
         pack()
@@ -28,4 +28,4 @@ router.post('/', (req, res, next) => {
         res.send('打包中');
     }());
 });
-module.exports = router;
+export default router;

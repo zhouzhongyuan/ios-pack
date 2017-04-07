@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var pack = require('../pack');
+var pack = require('./pack');
 var plist = require('../plist');
 
 var status = {

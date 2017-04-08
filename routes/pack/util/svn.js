@@ -1,8 +1,10 @@
 import Client from 'svn-spawn';
-function getSvn(url, dir, username, password) {
+
+function get(url, username, password, dir) {
+    const dirPath = dir || './working';
     return new Promise((resolve, reject) => {
         const client = new Client({
-            cwd: dir,
+            cwd: dirPath,
             username,
             password,
         });
@@ -14,4 +16,6 @@ function getSvn(url, dir, username, password) {
         });
     });
 }
-export default getSvn;
+export default {
+    get,
+};

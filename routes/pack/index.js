@@ -1,6 +1,6 @@
 import express from 'express';
 import pack from './pack';
-import plist from 'plist';
+
 const router = express.Router();
 const status = {
     busy: false,

@@ -5,8 +5,8 @@ function get(url, username, password, dir) {
     return new Promise((resolve, reject) => {
         const client = new Client({
             cwd: dirPath,
-            username,
-            password,
+            username: username,
+            password: password,
         });
         client.checkout(url, (err, data) => {
             if (err) {

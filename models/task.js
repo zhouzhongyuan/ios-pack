@@ -1,9 +1,13 @@
 import mongoose from 'mongoose';
+import { projectSchema } from './task';
 const taskSchema = new mongoose.Schema({
-    svnUrl: String,
-    svnUsername: String,
-    svnPassword: String,
-    // projectId: String, //TODO 不应该保存前三个，而应该使用projectId
+    projectId: String,
     version: String,
+    project: projectSchema,
 });
-module.exports = mongoose.model('Task', taskSchema);
+const Task = mongoose.model('Task', taskSchema);
+export default Task;
+export {
+    taskSchema,
+    Task,
+};

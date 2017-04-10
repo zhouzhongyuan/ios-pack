@@ -18,6 +18,17 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+console.log('==============================================================================================================================================================');
+import Poll from './bin/poll';
+const poll = new Poll();
+poll.start();
+
+
+
+
+
+
+
 app.use('/', routes);
 app.use('/users', users);
 app.use('/pack', pack);

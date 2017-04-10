@@ -1,5 +1,4 @@
 import pack from './pack.ios';
-
 const fakeData = {
     projectId: '001',
     version: '0.0.1',

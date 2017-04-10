@@ -5,15 +5,13 @@ function pack(task) {
     const project = task.project.ios;
     const svnUrl = project.svn.url;
     return new Promise((resolve, reject) => {
-        process.chdir(`./working`);
+        process.chdir('./working');
         return ipa();
         fs.emptyDirAsync('./working')
-            .then(() => {
-                return svn.get(svnUrl, project.svn.userName, project.svn.password);
-            })
+            .then(() => svn.get(svnUrl, project.svn.userName, project.svn.password))
             .then(() => {
                 console.log('[1]更新SVN-成功');
-                process.chdir(`./working`);
+                process.chdir('./working');
                 console.log(process.cwd());
             })
             .then(() => {

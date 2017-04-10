@@ -1,6 +1,5 @@
 import express from 'express';
 import pack from './pack';
-
 const router = express.Router();
 const status = {
     busy: false,

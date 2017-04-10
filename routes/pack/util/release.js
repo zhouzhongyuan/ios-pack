@@ -1,5 +1,4 @@
 import fs from 'fs-extra';
-
 function release() {
     const PWD = workspaceFullPath;
     return new Promise((resolve, reject) => {

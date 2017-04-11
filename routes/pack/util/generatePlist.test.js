@@ -1,5 +1,4 @@
-var plist = require('./index');
-
+import plist from './generatePlist';
 var manifestJson = {
     "items": [{
         "assets": [{

@@ -1,16 +1,16 @@
-function genratePlist(exportOption) {
-    return new Promise((resolve, reject) => {
-        const ls = spawn('xcodebuild', ['-exportArchive', '-archivePath', './build/yesapp.xcarchive', '-exportOptionsPlist', exportOptionsPlist, '-exportPath', './build']);
-        ls.stdout.on('data', (data) => {
-            console.log(`stdout: ${data}`);
+import fs from 'fs';
+import plist from 'plist';
+function genratePlist(manifestJson) {
+    return new Promise( (resolve, reject) => {
+        const data = plist.build(manifestJson);
+        const fileName = 'working/manifest.plist';
+        fs.writeFile(fileName, data, (err) => {
+            if (err) {
+                reject(err)
+            };
+            resolve(`${fileName} was saved!`);
         });
-        ls.stderr.on('data', (data) => {
-            data = data.toString();
-            console.log(data);
-        });
-        ls.on('close', (code) => {
-            resolve(code);
-        });
-    });
+
+    })
 }
 export default genratePlist;

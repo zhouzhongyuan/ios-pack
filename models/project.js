@@ -20,7 +20,7 @@ const projectSchema = new mongoose.Schema({
         keyStore: String,
     },
     lastRelease: {
-        ios: String,
+        ios: String,    //taskId
         android: String,
     },
 });

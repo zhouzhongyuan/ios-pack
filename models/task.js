@@ -12,6 +12,8 @@ const taskSchema = new mongoose.Schema({
         code: String,
         log: String,
     },
+    ipaUrl: String,
+    plistUrl: String,
     dateOfCreate: { type: Date, default: Date.now },
 });
 const Task = mongoose.model('Task', taskSchema);

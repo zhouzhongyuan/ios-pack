@@ -5,7 +5,6 @@ import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
 import routes from './routes/index';
 import users from './routes/users';
-import pack from './routes/pack';
 const app = express();
 app.use(require('express-status-monitor')());
 // view engine setup
@@ -31,7 +30,6 @@ poll.start();
 
 app.use('/', routes);
 app.use('/users', users);
-app.use('/pack', pack);
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
     const err = new Error('Not Found');

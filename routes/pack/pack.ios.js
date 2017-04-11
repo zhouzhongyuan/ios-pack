@@ -7,7 +7,12 @@ function pack(task) {
     return new Promise((resolve, reject) => {
         // process.chdir('./working');
         // return ipa();
-        fs.emptyDirAsync('./working')
+        task.status.code = "processing";
+        task.save()
+            .then( () => {
+                console.log('===update status.code===');
+                return fs.emptyDirAsync('./working');
+            })
             .then(() => svn.get(svnUrl, project.svn.userName, project.svn.password))
             .then(() => {
                 console.log('[1]更新SVN-成功');
@@ -22,7 +27,7 @@ function pack(task) {
                 console.log('[3]生成ipa-开始……');
                 return ipa();
             })
-            .then(() => {
+/*            .then(() => {
                 console.log('[3]生成ipa-成功……');
                 console.log('[4]上传ipa-开始……');
                 return upload();
@@ -47,15 +52,28 @@ function pack(task) {
                 task.ipaUrl = data.url;
                 task.save();
                 return data;
+            })*/
+            .then((data) => {
+                // after status code === success
+                process.chdir('..');
+                return fs.emptyDirAsync('./working');
+            })
+            .then((data) => {
+                // pack success
+                task.status.code = "success";
+                task.save()
+                    .then(() => {
+                        resolve({success: true});
+                    });
             })
             .catch((e) => {
-                console.log('打包失败');
-                console.log(e);
+                task.status.code = "fail";
+                task.save();
+                console.log('打包失败',e);
                 reject(e);
             });
     });
 }
 export default pack;
 
-
-// TODO 三个函数 upload, generatePlist, cleanPack
+// TODO 三个函数 upload, cleanPack

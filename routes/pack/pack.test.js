@@ -2,6 +2,7 @@ import pack from './pack.ios';
 const fakeData = {
     projectId: '001',
     version: '0.0.1',
+    packageName: 'cn.com.broadocean.xmf',
     project: {
         id: '001',
         name: '大洋小蜜蜂',
@@ -15,5 +16,15 @@ const fakeData = {
             mobileProvision: '{todo}',
         },
     },
+    status: {
+        code: 'waiting',
+    }
 };
-pack(fakeData);
+pack(fakeData)
+    .then((data) => {
+        console.log(data);
+        console.log('ok');
+    })
+    .catch((err) => {
+        console.log('error',err);
+    });

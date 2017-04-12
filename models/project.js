@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 const projectSchema = new mongoose.Schema({
     id: String,
     name: String,
+    packageName: String,
     desc: String,
     ios: {
         svn: {

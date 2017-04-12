@@ -1,4 +1,5 @@
 import pack from './pack.ios';
+import Logger from './util/logger';
 const fakeData = {
     projectId: '001',
     version: '0.0.1',
@@ -20,11 +21,13 @@ const fakeData = {
         code: 'waiting',
     }
 };
-pack(fakeData)
-    .then((data) => {
-        console.log(data);
-        console.log('ok');
-    })
-    .catch((err) => {
-        console.log('error',err);
-    });
+const logger = Logger('000');
+logger.info('begin')
+// pack(fakeData)
+//     .then((data) => {
+//         console.log(data);
+//         console.log('ok');
+//     })
+//     .catch((err) => {
+//         console.log('error',err);
+//     });

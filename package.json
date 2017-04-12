@@ -23,13 +23,15 @@
     "fs-extra-promise": "^1.0.1",
     "jade": "~1.11.0",
     "mobileprovision": "0.0.4",
+    "moment": "^2.18.1",
     "mongoose": "^4.9.3",
     "morgan": "^1.7.0",
     "nodemon": "^1.11.0",
     "plist": "^2.0.1",
     "request": "^2.81.0",
     "serve-favicon": "^2.3.0",
-    "svn-spawn": "^0.1.5"
+    "svn-spawn": "^0.1.5",
+    "winston": "^2.3.1"
   },
   "devDependencies": {
     "autoprefixer": "^6.0.3",

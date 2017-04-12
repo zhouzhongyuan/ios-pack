@@ -6,6 +6,7 @@ import changeInfoPlist from './changeInfoPlist';
 import upload from './upload';
 import imp from './installMobileProvision';
 import generatePlist from './generatePlist';
+import Logger from './logger';
 export {
     svn,
     archive,
@@ -15,4 +16,5 @@ export {
     upload,
     imp,
     generatePlist,
+    Logger,
 };

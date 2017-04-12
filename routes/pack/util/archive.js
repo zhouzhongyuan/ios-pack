@@ -1,12 +1,12 @@
 const spawn = require('child_process').spawn;
-function archive() {
+function archive(logger) {
     return new Promise((resolve, reject) => {
         const ls = spawn('xcodebuild', ['-project', 'yesapp.xcodeproj', '-scheme', 'yesapp', '-sdk', 'iphoneos', 'archive', '-archivePath', './build/yesapp.xcarchive']);
         ls.stdout.on('data', (data) => {
-            console.log(`stdout: ${data}`);
+            logger.log('info', `Archive. ${data}`);
         });
         ls.stderr.on('data', (data) => {
-            console.log(data);
+            logger.log('error', `Archive. ${data}`);
             reject(data.toString());
         });
         ls.on('close', (code) => {

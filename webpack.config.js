@@ -19,7 +19,12 @@ const config = {
     // The configuration for the server-side rendering
     name: 'server',
     target: 'node',
-    entry: path.resolve(__dirname, 'bin/www.js'),
+    // entry: path.resolve(__dirname, 'routes/pack/pack.test.js'),
+    // entry: ['babel-polyfill',path.resolve(__dirname, 'routes/pack/util/changeInfoPlist/index.test.js')],
+    // entry: ['babel-polyfill',path.resolve(__dirname, 'routes/pack/util/upload/index.test.js')],
+    // entry: path.resolve(__dirname, 'bin/www.js'),
+    entry: ['babel-polyfill', path.resolve(__dirname, 'bin/www.js')],
+
     output: {
         path: SERVER_BUILD_DIR,
         filename: 'index.js'

@@ -20,7 +20,7 @@ function Poll() {
 }
 Poll.prototype = {
     start() {
-        this.interval = setInterval(() => { this.monitor(); }, 20 * 1000);
+        this.interval = setInterval(() => { this.monitor(); }, 5 * 1000);
     },
     stop() {
         clearInterval(this.interval);

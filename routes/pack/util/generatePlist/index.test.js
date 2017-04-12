@@ -1,4 +1,4 @@
-import plist from './generatePlist';
+import plist from './index';
 var manifestJson = {
     "items": [{
         "assets": [{

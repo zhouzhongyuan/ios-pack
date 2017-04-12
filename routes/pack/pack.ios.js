@@ -1,15 +1,20 @@
 import fs from 'fs-extra-promise';
+import imp from './util/installMobileProvision';
 import { svn, archive, ipa, release } from './util';
 function pack(task) {
     // 处理数据
     const project = task.project.ios;
     const svnUrl = project.svn.url;
+    const mobileProvision = project.mobileProvision;
     return new Promise((resolve, reject) => {
         // process.chdir('./working');
         // return ipa();
         task.status.code = "processing";
         task.save()
-            .then( () => {
+            // .then( () => {
+            //     return imp(mobileProvision);
+            // })
+            .then( (data) => {
                 console.log('===update status.code===');
                 return fs.emptyDirAsync('./working');
             })
@@ -76,4 +81,4 @@ function pack(task) {
 }
 export default pack;
 
-// TODO 三个函数 upload, cleanPack
+// TODO 三个函数 upload, cleanPack, prepareMobileProvision

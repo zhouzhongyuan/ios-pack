@@ -2,8 +2,9 @@ import fs from 'fs-extra-promise';
 import { svn, archive, ipa, release, imp, changeInfoPlist, upload, generatePlist, Logger } from './util';
 import config from '../../config';
 async function pack(task) {
+    const logFile = `log/${task.id}.log`;
     try{
-        const logger = Logger(`log/${task.id}.log`);
+        const logger = Logger(logFile);
         logger.log('verbose', 'Pack begin.');
         const project = task.project.ios;
         const svnUrl = project.svn.url;
@@ -11,6 +12,9 @@ async function pack(task) {
         task.status.code = "processing";
         await task.save();
         logger.log('info', 'Save task status processing success.');
+        const impResult = await imp(mobileProvision);
+        logger.log('info', impResult);
+        logger.log('info', 'Install mobile provision success.');
         await fs.emptyDirAsync('./working');
         logger.log('info', 'Empty working directory success.');
         await svn.get(svnUrl, project.svn.userName, project.svn.password);
@@ -46,15 +50,26 @@ async function pack(task) {
         process.chdir('..');
         task.status.code = "success";
         await task.save();
+        logger.log('info', 'Save task.status.code = "success" to database success');
+        if(task.release){
+
+        }
         return {success: true};
-    }catch (err){
+    }catch (ex){
+        console.log(ex);
         process.chdir('..');
         logger.log('error', err.message);
         task.status.code = "fail";
         await task.save();
-        return {success: true, message:err.message};
+        return {success: false, message:ex.message};
+    }finally {
+        console.log(logFile);
+        const uploadLogData = await upload(config.server.upload, logFile);
+        task.status.log = uploadLogData.url;
+        await task.save();
+        fs.remove(logFile);
     }
 }
 export default pack;
 
-// TODO 函数 cleanPack, prepareMobileProvision
+// TODO 函数 cleanPack

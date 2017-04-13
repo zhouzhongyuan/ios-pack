@@ -1,10 +1,16 @@
 import mp from 'mobileprovision';
+import fs from 'fs-extra-promise';
 import download from '../download';
+
 async function installMobileProvision(mpUrl) {
-    await download(mpUrl, 'temp.mobileprovision');
-    const value = await mp('temp.mobileprovision');
-    console.log(value);
-    return value;
+    const file = 'temp.mobileprovision';
+    try{
+        await download(mpUrl, file);
+        const value = await mp(file);
+        return value;
+    }finally{
+        await fs.remove(file);
+    }
 }
 
 export default installMobileProvision;

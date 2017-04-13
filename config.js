@@ -1,6 +1,6 @@
 export default {
     db: {
-        uri: 'mongodb://192.168.1.100/ios-pack',
+        uri: 'mongodb://1.1.8.34/mbt',
         options: {
             // user: 'admin',
             // pass: 'admin',

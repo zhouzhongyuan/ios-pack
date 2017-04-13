@@ -27,6 +27,7 @@ const config = {
     // entry: ['babel-polyfill', path.resolve(__dirname, 'routes/pack/util/download/index.test.js')],
     // entry: ['babel-polyfill', path.resolve(__dirname, 'routes/pack/util/installMobileProvision/index.test.js')],
     // entry: ['babel-polyfill', path.resolve(__dirname, 'routes/pack/util/updateProject/index.test.js')],
+    // entry: ['babel-polyfill', path.resolve(__dirname, 'routes/pack/util/fileExist/index.test.js')],
     entry: ['babel-polyfill', path.resolve(__dirname, 'bin/www.js')],
 
     output: {

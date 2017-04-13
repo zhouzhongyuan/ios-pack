@@ -1,21 +1,11 @@
-import mongoose from 'mongoose';
 import config from '../config';
-import { Project, Task } from '../models';
+import connect from '../connect';
 const { db } = config;
 const app = require('../app');
 const debug = require('debug')('myapp:server');
 const http = require('http');
 // Connect database
-mongoose.Promise = Promise;
-mongoose.connect(db.uri, db.options)
-    .then(
-        () => {
-            console.log('Database connect success.');
-        },
-        (err) => {
-            console.log(err);
-        }
-    )
+connect(db.uri, db.options)
 /**
  * Get port from environment and store in Express.
  */

@@ -9,7 +9,6 @@ function upload(url, filePath) {
             if(err){
                 reject(err);
             }
-            console.log(body);
             let data = body;
             if(typeof body === 'string'){
                 data = JSON.parse(body);

@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { projectSchema } from './project';
+import {projectSchema} from './project';
 const taskSchema = new mongoose.Schema({
     projectId: String,
     project: projectSchema,
@@ -13,8 +13,13 @@ const taskSchema = new mongoose.Schema({
     },
     ipaUrl: String,
     plistUrl: String,
-    dateOfCreate: { type: Date, default: Date.now },
-});
+    dateOfCreate: {type: Date, default: Date.now},
+    },
+    {
+        toJSON: {
+            virtuals: true
+        }
+    });
 const Task = mongoose.model('Task', taskSchema);
 export default Task;
 export {

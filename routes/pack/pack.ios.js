@@ -1,5 +1,5 @@
 import fs from 'fs-extra-promise';
-import { svn, archive, ipa, release, imp, changeInfoPlist, upload, generatePlist, Logger, updateProject } from './util';
+import { svn, archive, ipa, release, imp, changeInfoPlist, upload, generatePlist, Logger, updateProject, fileExist } from './util';
 import config from '../../config';
 async function pack(task) {
     const logFile = `log/${task.id}.log`;
@@ -8,7 +8,7 @@ async function pack(task) {
         logger.log('verbose', 'Pack begin.');
         const project = task.project.ios;
         const svnUrl = project.svn.url;
-        const mobileProvision = project.mobileProvision;
+        const mobileProvision = project.mobileProvision.url;
         task.status.code = "processing";
         await task.save();
         logger.log('info', 'Save task status processing success.');
@@ -68,7 +68,10 @@ async function pack(task) {
         await task.save();
         return {success: false, message:ex.message};
     }finally {
-        console.log(logFile);
+        const isExist = await fileExist(logFile);
+        if(!isExist){
+            return;
+        }
         const uploadLogData = await upload(config.server.upload, logFile);
         task.status.log = uploadLogData.url;
         await task.save();

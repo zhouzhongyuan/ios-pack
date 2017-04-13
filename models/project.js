@@ -9,7 +9,10 @@ const projectSchema = new mongoose.Schema({
             userName: String,
             password: String,
         },
-        mobileProvision: String,
+        mobileProvision: {
+            filename: String,
+            url:String
+        },
     },
     android: {
         svn: {
@@ -17,13 +20,25 @@ const projectSchema = new mongoose.Schema({
             userName: String,
             password: String,
         },
-        keyStore: String,
+        keyStore: {
+            file:{
+                filename: String,
+                url:String
+            },
+            userName:String,
+            password:String
+        },
     },
     lastRelease: {
         ios: String,    //taskId
         android: String,
     },
+},{
+    toJSON:{
+        virtuals:true
+    }
 });
+
 const Project = mongoose.model('Project', projectSchema);
 export default Project;
 export {

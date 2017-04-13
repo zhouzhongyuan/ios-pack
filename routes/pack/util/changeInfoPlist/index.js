@@ -3,10 +3,10 @@ import fs from 'fs';
 
 async function changeInfoPlist(infoPlist, version) {
     const xml = await readFileAsync(infoPlist);
-    let json = plist.parse(xml.toString());
-    json.CFBundleShortVersionString = version;
-    await writeFileAsync(infoPlist, plist.build(json));
-
+    const xmlStr = xml.toString();
+    const versionReg = /(CFBundleShortVersionString<\/key>\n.*<string>)(.*)(<\/string>)/mig;
+    const newXmlStr = xmlStr.toString().replace(versionReg, `$1${version}$3`);
+    await writeFileAsync(infoPlist, newXmlStr);
 }
 function readFileAsync(file) {
     return new Promise(function (resolve, reject) {

@@ -1,5 +1,5 @@
 import fs from 'fs-extra-promise';
-import { svn, archive, ipa, release, imp, changeInfoPlist, upload, generatePlist, Logger } from './util';
+import { svn, archive, ipa, release, imp, changeInfoPlist, upload, generatePlist, Logger, updateProject } from './util';
 import config from '../../config';
 async function pack(task) {
     const logFile = `log/${task.id}.log`;
@@ -52,11 +52,16 @@ async function pack(task) {
         await task.save();
         logger.log('info', 'Save task.status.code = "success" to database success');
         if(task.release){
-
+            const obj = {
+                lastRelease: {
+                    ios: task.id,
+                },
+            }
+            await updateProject(task.projectId, obj)
         }
         return {success: true};
     }catch (ex){
-        console.log(ex);
+        console.log(`catche error`,ex);
         process.chdir('..');
         logger.log('error', err.message);
         task.status.code = "fail";

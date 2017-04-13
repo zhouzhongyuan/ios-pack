@@ -4,7 +4,7 @@ var fs = require('fs');
 var nodeModules = {};
 
 var SERVER_DIR = path.resolve(__dirname, 'server');
-var SERVER_BUILD_DIR = path.resolve(__dirname, 'server/dist/js');
+var SERVER_BUILD_DIR = path.resolve(__dirname, 'dist');
 
 // es5 style alternative
 fs.readdirSync(path.resolve(__dirname, 'node_modules'))
@@ -23,6 +23,10 @@ const config = {
     // entry: ['babel-polyfill',path.resolve(__dirname, 'routes/pack/util/changeInfoPlist/index.test.js')],
     // entry: ['babel-polyfill',path.resolve(__dirname, 'routes/pack/util/upload/index.test.js')],
     // entry: path.resolve(__dirname, 'bin/www.js'),
+    // entry: ['babel-polyfill', path.resolve(__dirname, 'routes/pack/pack.test.js')],
+    // entry: ['babel-polyfill', path.resolve(__dirname, 'routes/pack/util/download/index.test.js')],
+    // entry: ['babel-polyfill', path.resolve(__dirname, 'routes/pack/util/installMobileProvision/index.test.js')],
+    // entry: ['babel-polyfill', path.resolve(__dirname, 'routes/pack/util/updateProject/index.test.js')],
     entry: ['babel-polyfill', path.resolve(__dirname, 'bin/www.js')],
 
     output: {

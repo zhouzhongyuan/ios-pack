@@ -8,6 +8,7 @@ import imp from './installMobileProvision';
 import generatePlist from './generatePlist';
 import Logger from './logger';
 import updateProject from './updateProject';
+import fileExist from './fileExist';
 export {
     svn,
     archive,
@@ -19,4 +20,5 @@ export {
     generatePlist,
     Logger,
     updateProject,
+    fileExist,
 };

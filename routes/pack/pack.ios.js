@@ -3,8 +3,8 @@ import { svn, archive, ipa, release, imp, changeInfoPlist, upload, generatePlist
 import config from '../../config';
 async function pack(task) {
     const logFile = `log/${task.id}.log`;
+    const logger = Logger(logFile);
     try{
-        const logger = Logger(logFile);
         logger.log('verbose', 'Pack begin.');
         const project = task.project.ios;
         const svnUrl = project.svn.url;
@@ -58,14 +58,18 @@ async function pack(task) {
                 },
             }
             await updateProject(task.projectId, obj)
+            logger.log('info', 'Update lastRelease success.');
         }
         return {success: true};
     }catch (ex){
-        console.log(`catche error`,ex);
-        process.chdir('..');
-        logger.log('error', err.message);
+        logger.log('error', ex.message);
         task.status.code = "fail";
         await task.save();
+        logger.log('info', 'Save task.status.code = "fail" to database success.');
+        const currentDir = process.cwd();
+        if(currentDir.match(/([^\/]*)\/*$/)[1] === 'working'){
+            process.chdir('..');
+        }
         return {success: false, message:ex.message};
     }finally {
         const isExist = await fileExist(logFile);

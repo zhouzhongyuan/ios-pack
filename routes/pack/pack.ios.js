@@ -44,7 +44,7 @@ async function pack(task) {
         logger.log('info', 'Generate manifest.plist success');
         const uploadPlistData = await upload(config.server.upload, 'manifest.plist');
         logger.log('info', 'Upload manifest.plist success');
-        task.plistUrl = uploadPlistData.url;
+        task.targetUrl = uploadPlistData.url;
         await task.save();
         logger.log('info', 'Save manifest.plist to database success');
         process.chdir('..');
@@ -54,7 +54,10 @@ async function pack(task) {
         if(task.release){
             const obj = {
                 lastRelease: {
-                    ios: task.id,
+                    ios: {
+                        taskId: task.id,
+                        version: task.version,
+                    },
                 },
             }
             await updateProject(task.projectId, obj)

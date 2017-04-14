@@ -11,8 +11,7 @@ const taskSchema = new mongoose.Schema({
         code: String,
         log: String,
     },
-    ipaUrl: String,
-    plistUrl: String,
+    targetUrl: String,
     dateOfCreate: {type: Date, default: Date.now},
     },
     {

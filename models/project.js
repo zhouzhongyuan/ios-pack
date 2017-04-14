@@ -30,8 +30,14 @@ const projectSchema = new mongoose.Schema({
         },
     },
     lastRelease: {
-        ios: String,    //taskId
-        android: String,
+        ios: {
+            taskId: String,
+            version: String,
+        },    //taskId
+        android: {
+            taskId: String,
+            version: String,
+        },
     },
 },{
     toJSON:{

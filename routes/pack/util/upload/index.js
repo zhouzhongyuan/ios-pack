@@ -1,10 +1,16 @@
 import request from 'request';
 import fs from 'fs';
-function upload(url, filePath) {
+function upload(url, filePath, contentType) {
     return new Promise((resolve, reject) => {
         const formData = {
-            file: fs.createReadStream(filePath),
+            file: {
+                value: fs.createReadStream(filePath),
+                options:{},
+            },
         };
+        if(contentType){
+            formData.file.options.contentType = contentType;
+        }
         request.post({url:url, formData: formData}, (err, httpResponse, body) => {
             if(err){
                 reject(err);

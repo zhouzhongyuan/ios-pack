@@ -24,7 +24,7 @@ async function pack(task) {
         logger.log('info', 'Change Info.plist version success.');
         await archive(logger);
         await ipa(logger);
-        const uploadIpaData = await upload(config.server.upload, 'build/yesapp.ipa');
+        const uploadIpaData = await upload(config.server.upload, 'build/yesapp.ipa', 'application/octet-stream');
         logger.log('info', 'Upload ipa file success');
         const manifestJson = {
             "items": [{
@@ -42,7 +42,7 @@ async function pack(task) {
         };
         await generatePlist(manifestJson);
         logger.log('info', 'Generate manifest.plist success');
-        const uploadPlistData = await upload(config.server.upload, 'manifest.plist');
+        const uploadPlistData = await upload(config.server.upload, 'manifest.plist', 'text/xml');
         logger.log('info', 'Upload manifest.plist success');
         task.targetUrl = uploadPlistData.url;
         await task.save();

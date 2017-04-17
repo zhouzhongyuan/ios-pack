@@ -3,7 +3,6 @@ import Logger from './util/logger';
 const fakeData = {
     projectId: '001',
     version: '0.0.1',
-    packageName: 'cn.com.broadocean.xmf',
     project: {
         id: '001',
         name: '大洋小蜜蜂',

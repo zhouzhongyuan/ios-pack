@@ -1,5 +1,5 @@
 import fs from 'fs-extra-promise';
-import { svn, archive, ipa, release, imp, changeInfoPlist, upload, generatePlist, Logger, updateProject, fileExist } from './util';
+import { svn, archive, ipa, imp, changeInfoPlist, upload, generatePlist, Logger, updateProject, fileExist, getPlistValue } from './util';
 import config from '../../config';
 async function pack(task) {
     const logFile = `log/${task.id}.log`;
@@ -26,6 +26,7 @@ async function pack(task) {
         await ipa(logger);
         const uploadIpaData = await upload(config.server.upload, 'build/yesapp.ipa', 'application/octet-stream');
         logger.log('info', 'Upload ipa file success');
+        const bundleId = await getPlistValue('build/yesapp.xcarchive/Info.plist', 'ApplicationProperties.CFBundleIdentifier');
         const manifestJson = {
             "items": [{
                 "assets": [{
@@ -33,10 +34,10 @@ async function pack(task) {
                     "url": uploadIpaData.url
                 }],
                 "metadata": {
-                    "bundle-identifier": task.packageName,
+                    "bundle-identifier": bundleId,
                     "bundle-version": task.version,
                     "kind": "software",
-                    "title": task.name
+                    "title": task.project.name
                 }
             }]
         };

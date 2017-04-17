@@ -45,6 +45,10 @@ const config = {
                 test: /\.json$/,
                 loader: 'json-loader'
             },
+            {
+                test: /\.plist/,
+                loader: 'file-loader?name=[name].[ext]',
+            },
         ]
     },
     watch: true,

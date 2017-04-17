@@ -1,5 +1,5 @@
-import pack from './pack.ios';
-import Logger from './util/logger';
+import pack from './pack';
+import Logger from './util/logger/index';
 const fakeData = {
     projectId: '001',
     version: '0.0.1',

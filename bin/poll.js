@@ -1,4 +1,4 @@
-import pack from '../routes/pack/pack.ios';
+import pack from '../pack/pack.ios';
 import { Task } from '../models/index';
 
 function findTask(){

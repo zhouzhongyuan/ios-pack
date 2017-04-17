@@ -1,6 +1,6 @@
 import mp from 'mobileprovision';
 import fs from 'fs-extra-promise';
-import download from '../download';
+import download from '../download/index';
 
 async function installMobileProvision(mpUrl) {
     const file = 'temp.mobileprovision';

@@ -1,6 +1,6 @@
 import fs from 'fs-extra-promise';
-import { svn, archive, ipa, imp, changeInfoPlist, upload, generatePlist, Logger, updateProject, fileExist, getPlistValue } from './util';
-import config from '../../config';
+import { svn, archive, ipa, imp, changeInfoPlist, upload, generatePlist, Logger, updateProject, fileExist, getPlistValue } from './util/index';
+import config from '../config';
 const workingDir = 'working';
 async function pack(task) {
     const logFile = `log/${task.id}.log`;

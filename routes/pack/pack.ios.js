@@ -1,6 +1,7 @@
 import fs from 'fs-extra-promise';
 import { svn, archive, ipa, imp, changeInfoPlist, upload, generatePlist, Logger, updateProject, fileExist, getPlistValue } from './util';
 import config from '../../config';
+const workingDir = 'working';
 async function pack(task) {
     const logFile = `log/${task.id}.log`;
     const logger = Logger(logFile);
@@ -20,8 +21,14 @@ async function pack(task) {
         await svn.get(svnUrl, project.svn.userName, project.svn.password);
         logger.log('info', 'Get svn success');
         process.chdir('./working');
-        await changeInfoPlist('yesapp/Info.plist', task.version);
-        logger.log('info', 'Change Info.plist version success.');
+        const checkUpdateURL = `${config.server.checkUpdate}${task.project.id}`;
+        const newInfoPlist = {
+            CFBundleShortVersionString: task.version,
+            UpdateAppURL:checkUpdateURL,
+        };
+        console.log(newInfoPlist);
+        await changeInfoPlist('yesapp/Info.plist', newInfoPlist)
+        logger.log('info', 'Change Info.plist success.');
         await archive(logger);
         await ipa(logger);
         const uploadIpaData = await upload(config.server.upload, 'build/yesapp.ipa', 'application/octet-stream');

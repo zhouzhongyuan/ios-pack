@@ -24,7 +24,7 @@
     "moment": "^2.18.1",
     "mongoose": "^4.9.3",
     "nodemon": "^1.11.0",
-    "plist": "^2.0.1",
+    "plist": "git+https://github.com/OutSystems/plist.js.git",
     "request": "^2.81.0",
     "serve-favicon": "^2.3.0",
     "svn-spawn": "^0.1.5",

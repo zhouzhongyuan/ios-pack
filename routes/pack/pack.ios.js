@@ -60,15 +60,13 @@ async function pack(task) {
         await task.save();
         logger.log('info', 'Save task.status.code = "success" to database success');
         if(task.release){
-            const obj = {
-                lastRelease: {
-                    ios: {
-                        taskId: task.id,
-                        version: task.version,
-                    },
-                },
+            // TODO 此处没有考虑android或者其他更改
+            const lastReleaseIos = {
+                taskId: task.id,
+                version: task.version,
+                releaseDate: new Date().toISOString(),
             }
-            await updateProject(task.projectId, obj)
+            await updateProject(task.projectId, lastReleaseIos)
             logger.log('info', 'Update lastRelease success.');
         }
         return {success: true};

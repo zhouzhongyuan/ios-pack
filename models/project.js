@@ -10,7 +10,7 @@ const projectSchema = new mongoose.Schema({
         },
         mobileProvision: {
             filename: String,
-            url:String
+            url: String
         },
     },
     android: {
@@ -20,29 +20,33 @@ const projectSchema = new mongoose.Schema({
             password: String,
         },
         keyStore: {
-            file:{
+            file: {
                 filename: String,
-                url:String
+                url: String
             },
-            userName:String,
-            password:String
+            userName: String,
+            password: String
         },
     },
     lastRelease: {
         ios: {
             taskId: String,
             version: String,
-        },    //taskId
+            releaseDate: Date,
+        },
         android: {
             taskId: String,
             version: String,
+            releaseDate: Date,
         },
     },
-},{
-    toJSON:{
-        virtuals:true
+}, {
+    toJSON: {
+        virtuals: true
     }
 });
+
+projectSchema.pre()
 
 const Project = mongoose.model('Project', projectSchema);
 export default Project;

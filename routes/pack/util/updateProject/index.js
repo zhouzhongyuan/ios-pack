@@ -1,7 +1,7 @@
 import { Project, Task } from '../../../../models/index';
 async function updateProject(id,obj){
     const project = await Project.findById(id).exec();
-    Object.assign(project,obj);
+    project.lastRelease.ios = obj;
     console.log(project)
     await project.save();
 }

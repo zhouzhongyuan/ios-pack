@@ -9,6 +9,7 @@ import generatePlist from './generatePlist';
 import Logger from './logger';
 import updateProject from './updateProject';
 import fileExist from './fileExist';
+import getPlistValue from './getPlistValue';
 export {
     svn,
     archive,
@@ -21,4 +22,5 @@ export {
     Logger,
     updateProject,
     fileExist,
+    getPlistValue,
 };

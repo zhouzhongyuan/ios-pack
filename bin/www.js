@@ -1,5 +1,5 @@
 import config from '../config';
-import connect from '../connect';
+import connect from './connect';
 const { db } = config;
 const app = require('../app');
 const debug = require('debug')('myapp:server');

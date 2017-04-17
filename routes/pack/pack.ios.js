@@ -5,12 +5,12 @@ const workingDir = 'working';
 async function pack(task) {
     const logFile = `log/${task.id}.log`;
     const logger = Logger(logFile);
-    try{
+    try {
         logger.log('verbose', 'Pack begin.');
         const project = task.project.ios;
         const svnUrl = project.svn.url;
         const mobileProvision = project.mobileProvision.url;
-        task.status.code = "processing";
+        task.status.code = 'processing';
         await task.save();
         logger.log('info', 'Save task status processing success.');
         const impResult = await imp(mobileProvision);
@@ -24,10 +24,9 @@ async function pack(task) {
         const checkUpdateURL = `${config.server.checkUpdate}${task.project.id}`;
         const newInfoPlist = {
             CFBundleShortVersionString: task.version,
-            UpdateAppURL:checkUpdateURL,
+            UpdateAppURL: checkUpdateURL,
         };
-        console.log(newInfoPlist);
-        await changeInfoPlist('yesapp/Info.plist', newInfoPlist)
+        await changeInfoPlist('yesapp/Info.plist', newInfoPlist);
         logger.log('info', 'Change Info.plist success.');
         await archive(logger);
         await ipa(logger);
@@ -35,18 +34,18 @@ async function pack(task) {
         logger.log('info', 'Upload ipa file success');
         const bundleId = await getPlistValue('build/yesapp.xcarchive/Info.plist', 'ApplicationProperties.CFBundleIdentifier');
         const manifestJson = {
-            "items": [{
-                "assets": [{
-                    "kind": "software-package",
-                    "url": uploadIpaData.url
+            items: [{
+                assets: [{
+                    kind: 'software-package',
+                    url: uploadIpaData.url,
                 }],
-                "metadata": {
-                    "bundle-identifier": bundleId,
-                    "bundle-version": task.version,
-                    "kind": "software",
-                    "title": task.project.name
-                }
-            }]
+                metadata: {
+                    'bundle-identifier': bundleId,
+                    'bundle-version': task.version,
+                    kind: 'software',
+                    title: task.project.name,
+                },
+            }],
         };
         await generatePlist(manifestJson);
         logger.log('info', 'Generate manifest.plist success');
@@ -56,33 +55,33 @@ async function pack(task) {
         await task.save();
         logger.log('info', 'Save manifest.plist to database success');
         process.chdir('..');
-        task.status.code = "success";
+        task.status.code = 'success';
         await task.save();
         logger.log('info', 'Save task.status.code = "success" to database success');
-        if(task.release){
+        if (task.release) {
             // TODO 此处没有考虑android或者其他更改
             const lastReleaseIos = {
                 taskId: task.id,
                 version: task.version,
                 releaseDate: new Date().toISOString(),
-            }
-            await updateProject(task.projectId, lastReleaseIos)
+            };
+            await updateProject(task.projectId, lastReleaseIos);
             logger.log('info', 'Update lastRelease success.');
         }
-        return {success: true};
-    }catch (ex){
+        return { success: true };
+    } catch (ex) {
         logger.log('error', ex.message);
-        task.status.code = "fail";
+        task.status.code = 'fail';
         await task.save();
         logger.log('info', 'Save task.status.code = "fail" to database success.');
         const currentDir = process.cwd();
-        if(currentDir.match(/([^\/]*)\/*$/)[1] === 'working'){
+        if (currentDir.match(/([^\/]*)\/*$/)[1] === 'working') {
             process.chdir('..');
         }
-        return {success: false, message:ex.message};
-    }finally {
+        return { success: false, message: ex.message };
+    } finally {
         const isExist = await fileExist(logFile);
-        if(!isExist){
+        if (!isExist) {
             return;
         }
         const uploadLogData = await upload(config.server.upload, logFile);
@@ -92,5 +91,4 @@ async function pack(task) {
     }
 }
 export default pack;
-
 // TODO 函数 cleanPack

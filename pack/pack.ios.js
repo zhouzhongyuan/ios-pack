@@ -19,7 +19,10 @@ async function pack(task) {
         await fs.emptyDirAsync('./working');
         logger.log('info', 'Empty working directory success.');
         await svn.get(svnUrl, project.svn.userName, project.svn.password);
-        logger.log('info', 'Get svn success');
+        logger.log('info', `Get svn  ${svnUrl} success`);
+        fs.emptyDirAsync('./working/.svn');
+        await svn.get(task.framework.url, project.svn.userName, project.svn.password, './working/libs');
+        logger.log('info', `Get svn framework from ${task.framework.url} success`);
         process.chdir('./working');
         const checkUpdateURL = `${config.server.checkUpdate}${task.project.id}`;
         const newInfoPlist = {

@@ -18,10 +18,10 @@ const fakeData = {
     },
     status: {
         code: 'waiting',
-    }
+    },
 };
 const logger = Logger('000');
-logger.info('begin')
+logger.info('begin');
 // pack(fakeData)
 //     .then((data) => {
 //         console.log(data);

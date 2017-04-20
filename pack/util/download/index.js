@@ -9,9 +9,6 @@ function download(url, file) {
         stream.on('finish', () => {
             resolve('Download success');
         });
-
-    })
-
-
+    });
 }
 export default download;

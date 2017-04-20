@@ -5,15 +5,13 @@ function Logger(fileName) {
         transports: [
             new (winston.transports.File)({
                 filename: fileName,
-                timestamp: () => {
-                    return moment().format('YYYY-MM-DD HH:mm:ss:SSS');
+                timestamp: () => moment().format('YYYY-MM-DD HH:mm:ss:SSS'),
+                formatter(options) {
+                    return `${options.timestamp()} ${options.level.toUpperCase()} ${options.message ? options.message : ''
+                        }${options.meta && Object.keys(options.meta).length ? `\n\t${JSON.stringify(options.meta)}` : ''}`;
                 },
-                formatter: function(options) {
-                    return options.timestamp() +' '+ options.level.toUpperCase() +' '+ (options.message ? options.message : '') +
-                        (options.meta && Object.keys(options.meta).length ? '\n\t'+ JSON.stringify(options.meta) : '' );
-                }
-            })
-        ]
+            }),
+        ],
     });
 }
 export default Logger;

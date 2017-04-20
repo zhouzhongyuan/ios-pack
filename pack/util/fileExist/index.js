@@ -9,7 +9,6 @@ function fileExist(file) {
             }
             resolve(true);
         });
-    })
-
+    });
 }
 export default fileExist;

@@ -1,3 +1,5 @@
+import moment from 'moment';
+import readline from 'readline';
 import pack from '../pack/pack.ios';
 import { Task } from '../models/index';
 function findTask() {
@@ -35,10 +37,15 @@ Poll.prototype = {
                 this.busy = false;
             })
             .catch((err) => {
-                console.log(err);   // eslint-disable-line no-console
+                printProgress(err);
                 this.busy = false;
             });
     },
 };
+function printProgress(err) {
+    readline.clearLine(process.stdout, 0);
+    readline.cursorTo(process.stdout, 0);
+    process.stdout.write(`${moment().format('YYYY-MM-DD HH:mm:ss')}  ${err} \r`);   // eslint-disable-line no-console
+}
 Poll.prototype.constructor = Poll;
 export default Poll;

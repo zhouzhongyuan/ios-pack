@@ -7,6 +7,7 @@ const iosProjectDir = path.join(workingDir, 'iosprojects/project');
 const iosLibDir = path.join(workingDir, 'libs');
 const baseDir = process.cwd();
 async function pack(task) {
+    let returnValue;
     const logFile = `log/${task.id}.log`;
     const logger = Logger(logFile);
     try {
@@ -77,15 +78,16 @@ async function pack(task) {
             await updateProject(task.projectId, lastReleaseIos);
             logger.log('info', 'Update lastRelease success.');
         }
-        return { success: true };
+        returnValue = { success: true };
     } catch (ex) {
         logger.log('error', ex.message);
         task.status.code = 'fail';
         await task.save();
         logger.log('info', 'Save task.status.code = "fail" to database success.');
-        return { success: false, message: ex.message };
+        returnValue = { success: false, message: ex.message };
     } finally {
         process.chdir(baseDir);
+        logger.log('info', `Change dir to  ${baseDir} success.`);
         const isExist = await fileExist(logFile);
         if (!isExist) {
             return;
@@ -94,6 +96,7 @@ async function pack(task) {
         task.status.log = uploadLogData.url;
         await task.save();
         fs.remove(logFile);
+        return returnValue;
     }
 }
 export default pack;

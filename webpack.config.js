@@ -28,6 +28,7 @@ const config = {
     // entry: ['babel-polyfill', path.resolve(__dirname, 'pack/util/updateProject/index.test.js')],
     // entry: ['babel-polyfill', path.resolve(__dirname, 'pack/util/fileExist/index.test.js')],
     // entry: ['babel-polyfill', path.resolve(__dirname, 'pack/util/getPlistValue/index.test.js')],
+    // entry: ['babel-polyfill', path.resolve(__dirname, 'pack/util/ipa/index.test.js')],
     entry: ['babel-polyfill', path.resolve(__dirname, 'bin/www.js')],
 
     output: {

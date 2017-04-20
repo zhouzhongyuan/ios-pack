@@ -1,6 +1,6 @@
 import path from 'path';
+import { spawn } from 'child_process';
 import exportOptionsPlist from './exportOptions.plist';
-const spawn = require('child_process').spawn;
 const exportOptionsPlistAbsolutePath = path.join(path.dirname(process.argv[1]), exportOptionsPlist);
 function ipa(logger) {
     return new Promise((resolve, reject) => {

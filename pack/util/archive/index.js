@@ -1,4 +1,4 @@
-const spawn = require('child_process').spawn;
+import { spawn } from 'child_process';
 function archive(logger) {
     return new Promise((resolve, reject) => {
         const ls = spawn('xcodebuild', ['-project', 'yesapp.xcodeproj', '-scheme', 'yesapp', '-sdk', 'iphoneos', 'archive', '-archivePath', './build/yesapp.xcarchive']);

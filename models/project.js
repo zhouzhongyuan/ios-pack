@@ -10,7 +10,7 @@ const projectSchema = new mongoose.Schema({
         },
         mobileProvision: {
             filename: String,
-            url: String
+            url: String,
         },
     },
     android: {
@@ -22,10 +22,10 @@ const projectSchema = new mongoose.Schema({
         keyStore: {
             file: {
                 filename: String,
-                url: String
+                url: String,
             },
             userName: String,
-            password: String
+            password: String,
         },
     },
     lastRelease: {
@@ -42,12 +42,9 @@ const projectSchema = new mongoose.Schema({
     },
 }, {
     toJSON: {
-        virtuals: true
-    }
+        virtuals: true,
+    },
 });
-
-projectSchema.pre()
-
 const Project = mongoose.model('Project', projectSchema);
 export default Project;
 export {

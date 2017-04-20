@@ -1,18 +1,17 @@
 import pack from '../pack/pack.ios';
 import { Task } from '../models/index';
-
-function findTask(){
-    return new Promise(function(resolve,reject){
-        Task.findOne({ 'status.code': 'waiting' }, null , {sort:{'dateOfCreate': 1}}, function(err, task) {
-            if(err){
+function findTask() {
+    return new Promise((resolve, reject) => {
+        Task.findOne({ 'status.code': 'waiting' }, null, { sort: { dateOfCreate: 1 } }, (err, task) => {
+            if (err) {
                 reject(err);
             }
-            if(!task){
+            if (!task) {
                 reject('No waiting task.');
             }
             resolve(task);
-        })
-    })
+        });
+    });
 }
 function Poll() {
     this.interval = null;
@@ -26,19 +25,17 @@ Poll.prototype = {
         clearInterval(this.interval);
     },
     monitor() {
-        console.log('monitor');
         if (this.busy) {
             return;
         }
         this.busy = true;
         findTask()
-            .then((task) => {
-                return pack(task);
-            })
+            .then(task => pack(task))
             .then(() => {
                 this.busy = false;
             })
             .catch((err) => {
+                console.log(err);   // eslint-disable-line no-console
                 this.busy = false;
             });
     },

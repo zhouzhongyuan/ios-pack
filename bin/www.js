@@ -1,11 +1,11 @@
+import app from '../app';
+import http from 'http';
 import config from '../config';
 import connect from './connect';
 const { db } = config;
-const app = require('../app');
 const debug = require('debug')('myapp:server');
-const http = require('http');
 // Connect database
-connect(db.uri, db.options)
+connect(db.uri, db.options);
 /**
  * Get port from environment and store in Express.
  */
@@ -40,6 +40,7 @@ function normalizePort(val) {
  * Event listener for HTTP server "error" event.
  */
 function onError(error) {
+    console.log('onlistening');   // eslint-disable-line no-console
     if (error.syscall !== 'listen') {
         throw error;
     }
@@ -64,6 +65,7 @@ function onError(error) {
  * Event listener for HTTP server "listening" event.
  */
 function onListening() {
+    console.log('onlistening');   // eslint-disable-line no-console
     const addr = server.address();
     const bind = typeof addr === 'string'
         ? `pipe ${addr}`

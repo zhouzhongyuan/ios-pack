@@ -1,7 +1,11 @@
 import fs from 'fs-extra-promise';
+import path from 'path';
 import { svn, archive, ipa, imp, changeInfoPlist, upload, generatePlist, Logger, updateProject, fileExist, getPlistValue } from './util/index';
 import config from '../config';
 const workingDir = 'working';
+const iosProjectDir = path.join(workingDir, 'iosprojects/project');
+const iosLibDir = path.join(workingDir, 'libs');
+const baseDir = process.cwd();
 async function pack(task) {
     const logFile = `log/${task.id}.log`;
     const logger = Logger(logFile);
@@ -16,14 +20,17 @@ async function pack(task) {
         const impResult = await imp(mobileProvision);
         logger.log('info', impResult);
         logger.log('info', 'Install mobile provision success.');
-        await fs.emptyDirAsync('./working');
-        logger.log('info', 'Empty working directory success.');
-        await svn.get(svnUrl, project.svn.userName, project.svn.password);
+        await fs.emptyDirAsync(workingDir);
+        logger.log('info', `Empty ${workingDir} success.`);
+        await fs.emptyDirAsync(iosProjectDir);
+        await svn.get(svnUrl, project.svn.userName, project.svn.password, iosProjectDir);
         logger.log('info', `Get svn  ${svnUrl} success`);
-        fs.emptyDirAsync('./working/.svn');
-        await svn.get(task.framework.url, project.svn.userName, project.svn.password, './working/libs');
+        await fs.emptyDirAsync(`./${workingDir}/.svn`);
+        await fs.emptyDirAsync(iosLibDir);
+        logger.log('info', `Empty ${iosLibDir} success.`);
+        await svn.get(task.framework.url, project.svn.userName, project.svn.password, iosLibDir);
         logger.log('info', `Get svn framework from ${task.framework.url} success`);
-        process.chdir('./working');
+        process.chdir(iosProjectDir);
         const checkUpdateURL = `${config.server.checkUpdate}${task.project.id}`;
         const newInfoPlist = {
             CFBundleShortVersionString: task.version,
@@ -57,7 +64,6 @@ async function pack(task) {
         task.targetUrl = uploadPlistData.url;
         await task.save();
         logger.log('info', 'Save manifest.plist to database success');
-        process.chdir('..');
         task.status.code = 'success';
         await task.save();
         logger.log('info', 'Save task.status.code = "success" to database success');
@@ -77,12 +83,9 @@ async function pack(task) {
         task.status.code = 'fail';
         await task.save();
         logger.log('info', 'Save task.status.code = "fail" to database success.');
-        const currentDir = process.cwd();
-        if (currentDir.match(/([^\/]*)\/*$/)[1] === 'working') {
-            process.chdir('..');
-        }
         return { success: false, message: ex.message };
     } finally {
+        process.chdir(baseDir);
         const isExist = await fileExist(logFile);
         if (!isExist) {
             return;

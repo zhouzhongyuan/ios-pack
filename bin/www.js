@@ -40,7 +40,7 @@ function normalizePort(val) {
  * Event listener for HTTP server "error" event.
  */
 function onError(error) {
-    console.log('onlistening');   // eslint-disable-line no-console
+    console.log('onError');   // eslint-disable-line no-console
     if (error.syscall !== 'listen') {
         throw error;
     }

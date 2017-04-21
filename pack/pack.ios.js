@@ -1,6 +1,6 @@
 import fs from 'fs-extra-promise';
 import path from 'path';
-import { svn, archive, ipa, imp, changeInfoPlist, upload, generatePlist, Logger, updateProject, fileExist, getPlistValue } from './util/index';
+import { svn, archive, ipa, imp, changeInfoPlist, upload, generatePlist, Logger, updateProject, fileExist, getPlistValue, getProjectName } from './util/index';
 import config from '../config';
 const workingDir = 'working';
 const iosProjectDir = path.join(workingDir, 'iosprojects/project');
@@ -32,18 +32,19 @@ async function pack(task) {
         await svn.get(task.framework.url, project.svn.userName, project.svn.password, iosLibDir);
         logger.log('info', `Get svn framework from ${task.framework.url} success`);
         process.chdir(iosProjectDir);
+        const projectIOSName = await getProjectName();
         const checkUpdateURL = `${config.server.checkUpdate}${task.project.id}`;
         const newInfoPlist = {
             CFBundleShortVersionString: task.version,
             UpdateAppURL: checkUpdateURL,
         };
-        await changeInfoPlist('yesapp/Info.plist', newInfoPlist);
+        await changeInfoPlist(`${projectIOSName}/Info.plist`, newInfoPlist);
         logger.log('info', 'Change Info.plist success.');
-        await archive(logger);
-        await ipa(logger);
-        const uploadIpaData = await upload(config.server.upload, 'build/yesapp.ipa', 'application/octet-stream');
-        logger.log('info', 'Upload ipa file success');
-        const bundleId = await getPlistValue('build/yesapp.xcarchive/Info.plist', 'ApplicationProperties.CFBundleIdentifier');
+        await archive(projectIOSName, logger);
+        await ipa(projectIOSName, logger);
+        const uploadIpaData = await upload(config.server.upload, `build/${projectIOSName}.ipa`, 'application/octet-stream');
+        logger.log('info', `Upload ipa file success. The url is ${uploadIpaData.url}.`);
+        const bundleId = await getPlistValue(`build/${projectIOSName}.xcarchive/Info.plist`, 'ApplicationProperties.CFBundleIdentifier');
         const manifestJson = {
             items: [{
                 assets: [{
@@ -61,7 +62,7 @@ async function pack(task) {
         await generatePlist(manifestJson);
         logger.log('info', 'Generate manifest.plist success');
         const uploadPlistData = await upload(config.server.upload, 'manifest.plist', 'text/xml');
-        logger.log('info', 'Upload manifest.plist success');
+        logger.log('info', `Upload manifest.plist success. The url is ${uploadPlistData.url}.`);
         task.targetUrl = uploadPlistData.url;
         await task.save();
         logger.log('info', 'Save manifest.plist to database success');

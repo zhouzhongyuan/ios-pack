@@ -1,7 +1,7 @@
 import { spawn } from 'child_process';
-function archive(logger) {
+function archive(projectIOSName, logger) {
     return new Promise((resolve, reject) => {
-        const ls = spawn('xcodebuild', ['-project', 'yesapp.xcodeproj', '-scheme', 'yesapp', '-sdk', 'iphoneos', 'archive', '-archivePath', './build/yesapp.xcarchive']);
+        const ls = spawn('xcodebuild', ['-project', `${projectIOSName}.xcodeproj`, '-scheme', `${projectIOSName}`, '-sdk', 'iphoneos', 'archive', '-archivePath', `./build/${projectIOSName}.xcarchive`]);
         ls.stdout.on('data', (data) => {
             logger.log('info', `Archive. ${data}`);
         });

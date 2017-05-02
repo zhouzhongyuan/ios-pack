@@ -1,9 +1,9 @@
 import path from 'path';
 import { spawn } from 'child_process';
 import exportOptionsPlist from './exportOptions.plist';
-const exportOptionsPlistAbsolutePath = path.join(path.dirname(process.argv[1]), exportOptionsPlist);
+const exportOptionsPlistAbsolutePath = path.resolve(__dirname, exportOptionsPlist);
 function ipa(projectIOSName, logger) {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
         const ls = spawn('xcodebuild', ['-exportArchive', '-archivePath', `./build/${projectIOSName}.xcarchive`, '-exportOptionsPlist', exportOptionsPlistAbsolutePath, '-exportPath', './build']);
         ls.stdout.on('data', (data) => {
             logger.log('info', `Generate IPA. ${data}`);

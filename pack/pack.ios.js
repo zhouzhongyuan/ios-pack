@@ -1,6 +1,6 @@
 import fs from 'fs-extra-promise';
 import path from 'path';
-import { svn, archive, ipa, imp, changeInfoPlist, upload, generatePlist, Logger, updateProject, fileExist, getPlistValue, getProjectName } from './util/index';
+import { svn, archive, ipa, imp, importCertificate, changeInfoPlist, upload, generatePlist, Logger, updateProject, fileExist, getPlistValue, getProjectName } from './util/index';
 import config from '../config';
 const workingDir = 'working';
 const iosProjectDir = path.join(workingDir, 'iosprojects/project');
@@ -18,6 +18,13 @@ async function pack(task) {
         task.status.code = 'processing';
         await task.save();
         logger.log('info', 'Save task status processing success.');
+        const certificateUrl = project.certificate.file.url;
+        if (certificateUrl) {
+            const icResult = importCertificate(certificateUrl, project.certificate.password);
+            logger.log('info', icResult);
+        } else {
+            logger.log('info', 'No certificate.');
+        }
         const impResult = await imp(mobileProvision);
         logger.log('info', impResult);
         logger.log('info', 'Install mobile provision success.');

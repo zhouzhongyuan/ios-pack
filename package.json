@@ -17,6 +17,7 @@
     "express": "^4.14.0",
     "fs-extra": "^1.0.0",
     "fs-extra-promise": "^1.0.1",
+    "import-certificate": "^1.0.3",
     "mobileprovision": "0.0.4",
     "moment": "^2.18.1",
     "mongoose": "^4.9.3",

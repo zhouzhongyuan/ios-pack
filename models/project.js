@@ -8,6 +8,13 @@ const projectSchema = new mongoose.Schema({
             userName: String,
             password: String,
         },
+        certificate: {
+            file: {
+                filename: String,
+                url: String,
+            },
+            password: String,
+        },
         mobileProvision: {
             filename: String,
             url: String,

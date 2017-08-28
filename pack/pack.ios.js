@@ -20,7 +20,7 @@ async function pack(task) {
         logger.log('info', 'Save task status processing success.');
         const certificateUrl = project.certificate.file.url;
         if (certificateUrl) {
-            const icResult = importCertificate(certificateUrl, project.certificate.password);
+            const icResult = await importCertificate(certificateUrl, project.certificate.password);
             logger.log('info', icResult);
         } else {
             logger.log('info', 'No certificate.');

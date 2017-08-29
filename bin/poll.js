@@ -15,22 +15,49 @@ function findTask() {
         });
     });
 }
+function findProcessingTask() {
+    console.log('Only exec findProcessingTask at start.'); // eslint-disable-line
+    return new Promise((resolve, reject) => {
+        Task.find({ 'status.code': 'processing' }, null, { sort: { dateOfCreate: 1 } }, (err, task) => {
+            if (err) {
+                reject(err);
+            }
+            if (!task) {
+                resolve('No processing task.');
+            }
+            resolve(task);
+        });
+    });
+}
 function Poll() {
     this.interval = null;
     this.busy = false;
+    this.firstMonitor = true;
 }
 Poll.prototype = {
     start() {
-        this.interval = setInterval(() => { this.monitor(); }, 5 * 1000);
+        this.interval = setInterval(() => {
+            this.monitor();
+        }, 5 * 1000);
     },
     stop() {
         clearInterval(this.interval);
     },
-    monitor() {
+    async monitor() {
         if (this.busy) {
             return;
         }
         this.busy = true;
+        if (this.firstMonitor) {
+            // processing to waiting
+            const processingTask = await findProcessingTask();
+            for (let i = 0; i < processingTask.length; i++) {
+                const task = processingTask[i];
+                task.status.code = 'waiting';
+                await task.save();
+            }
+            this.firstMonitor = false;
+        }
         findTask()
             .then(task => pack(task))
             .then(() => {

@@ -2,6 +2,7 @@ import fs from 'fs-extra-promise';
 import path from 'path';
 import { svn, archive, ipa, imp, importCertificate, changeInfoPlist, upload, generatePlist, Logger, updateProject, fileExist, getPlistValue, getProjectName } from './util/index';
 import config from '../config';
+import preparePack from './preparePack';
 const workingDir = 'working';
 const iosProjectDir = path.join(workingDir, 'iosprojects/project');
 const iosLibDir = path.join(workingDir, 'libs');
@@ -11,6 +12,9 @@ async function pack(task) {
     const logFile = `log/${task.id}.log`;
     const logger = Logger(logFile);
     try {
+        logger.log('verbose', 'Prepare Pack begin.');
+        await preparePack();
+        logger.log('verbose', 'Prepare Pack success.');
         logger.log('verbose', 'Pack begin.');
         const project = task.project.ios;
         const svnUrl = project.svn.url;

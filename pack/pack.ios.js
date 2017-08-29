@@ -11,6 +11,7 @@ async function pack(task) {
     let returnValue;
     const logFile = `log/${task.id}.log`;
     const logger = Logger(logFile);
+    let mobileProvisionInstallLocation;
     try {
         logger.log('verbose', 'Prepare Pack begin.');
         await preparePack();
@@ -30,6 +31,7 @@ async function pack(task) {
             logger.log('info', 'No certificate.');
         }
         const impResult = await imp(mobileProvision);
+        mobileProvisionInstallLocation = impResult.installLocation;
         logger.log('info', impResult);
         logger.log('info', 'Install mobile provision success.');
         await fs.emptyDirAsync(workingDir);
@@ -100,6 +102,11 @@ async function pack(task) {
     } finally {
         process.chdir(baseDir);
         logger.log('info', `Change dir to  ${baseDir} success.`);
+        if (mobileProvisionInstallLocation) {
+            logger.log('info', `Delete installed mobileprovision "${mobileProvisionInstallLocation}" begin.`);
+            await fs.remove(mobileProvisionInstallLocation);
+            logger.log('info', `Delete installed mobileprovision "${mobileProvisionInstallLocation}" success.`);
+        }
         const isExist = await fileExist(logFile);
         if (!isExist) {
             return;

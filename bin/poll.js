@@ -16,7 +16,6 @@ function findTask() {
     });
 }
 function findProcessingTask() {
-    console.log('Only exec findProcessingTask at start.'); // eslint-disable-line
     return new Promise((resolve, reject) => {
         Task.find({ 'status.code': 'processing' }, null, { sort: { dateOfCreate: 1 } }, (err, task) => {
             if (err) {

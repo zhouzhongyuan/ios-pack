@@ -18,6 +18,7 @@
     "fs-extra": "^1.0.0",
     "fs-extra-promise": "^1.0.1",
     "import-certificate": "^1.0.6",
+    "mac-keychain": "^1.0.0",
     "mobileprovision": "0.0.7",
     "moment": "^2.18.1",
     "mongoose": "^4.9.3",

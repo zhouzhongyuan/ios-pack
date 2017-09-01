@@ -1,5 +1,6 @@
 import fs from 'fs-extra-promise';
 import path from 'path';
+import { unlockKeychain } from 'mac-keychain';
 import { svn, archive, ipa, imp, importCertificate, changeInfoPlist, upload, generatePlist, Logger, updateProject, fileExist, getPlistValue, getProjectName } from './util/index';
 import config from '../config';
 import preparePack from './preparePack';
@@ -53,6 +54,8 @@ async function pack(task) {
         };
         await changeInfoPlist(`${projectIOSName}/Info.plist`, newInfoPlist);
         logger.log('info', 'Change Info.plist success.');
+        await unlockKeychain('1111');
+        logger.log('info', 'Unlock keychain success.');
         await archive(projectIOSName, logger);
         await ipa(projectIOSName, logger);
         const uploadIpaData = await upload(config.server.upload, `build/${projectIOSName}.ipa`, 'application/octet-stream');

@@ -16,15 +16,20 @@ function writeFile(file, data) {
         });
     });
 }
-async function installMobileProvision(mpUrl) {
+async function installMobileProvision(mpUrl ) {
     const file = 'temp.mobileprovision';
     try {
         await download(mpUrl, file);
         const value = await mp(file);
         // generate exportOptions.plist
         const plistObj = {
+            compileBitcode: false,
             method: 'enterprise',
             teamID: value.TeamIdentifier,
+            provisioningProfiles: {
+                [value.Name]: value.UUID,
+            },
+            thinning: '<none>',
         };
         const plistStr = plist.build(plistObj);
         await writeFile(path.resolve(__dirname, '../tmp/exportOptions_temp.plist'), plistStr);

@@ -16,5 +16,9 @@
     "prefer-stateless-function":"off",
     "jsx-filename-extension":"off",
     "import/newline-after-import":"off"
+  },
+  "env":{
+    "jest": true
   }
+
 }

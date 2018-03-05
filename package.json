@@ -10,7 +10,8 @@
     "build": "webpack",
     "start:dev": "webpack-dev-server --inline --content-base ./src/client/ --history-api-fallback",
     "start:prod": "webpack && node src/server/app.js",
-    "test": "mocha --compilers js:babel-core/register --require babel-polyfill --recursive"
+    "test": "mocha pack/util/installMobileProvision/index.test.js --compilers js:babel-core/register --require babel-polyfill --recursive",
+    "test:jest": "jest pack/util/installMobileProvision/index.test.js"
   },
   "author": "",
   "license": "ISC",
@@ -25,7 +26,7 @@
     "moment": "^2.18.1",
     "mongoose": "^4.9.3",
     "nodemon": "^1.11.0",
-    "plist": "git+https://github.com/OutSystems/plist.js.git",
+    "plist": "^2.1.0",
     "request": "^2.81.0",
     "svn-spawn": "^0.1.5",
     "winston": "^2.3.1"
@@ -33,8 +34,9 @@
   "devDependencies": {
     "autoprefixer": "^6.0.3",
     "babel-cli": "^6.4.0",
-    "babel-core": "^6.22.1",
+    "babel-core": "^6.26.0",
     "babel-eslint": "^7.0.0",
+    "babel-jest": "^22.4.1",
     "babel-loader": "^6.2.3",
     "babel-plugin-transform-async-to-generator": "^6.24.1",
     "babel-polyfill": "^6.23.0",
@@ -51,7 +53,9 @@
     "eslint-plugin-react": "^6.3.0",
     "extract-text-webpack-plugin": "^0.8.2",
     "file-loader": "^0.11.1",
+    "jest": "^22.4.2",
     "mocha": "^3.2.0",
+    "regenerator-runtime": "^0.11.1",
     "webpack": "^1.12.2",
     "webpack-dev-middleware": "^1.2.0",
     "webpack-hot-middleware": "^2.2.0"

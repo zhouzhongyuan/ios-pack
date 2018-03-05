@@ -27,7 +27,7 @@ async function installMobileProvision(mpUrl ) {
             method: 'enterprise',
             teamID: value.TeamIdentifier,
             provisioningProfiles: {
-                [value.Name]: value.UUID,
+                [value.data.Name]: value.UUID,
             },
             thinning: '<none>',
         };
